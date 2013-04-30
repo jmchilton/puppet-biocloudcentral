@@ -1,0 +1,22 @@
+WSGIDaemonProcess <%= hostname %>-biocloudcentral user=<%= biocloudcentral_user %> processes=2 threads=10 display-name=%{GROUP} python-path=<%= destination %>:<%= destination%>/lib/python2.7/site-packages
+WSGIProcessGroup <%= hostname %>-biocloudcentral
+
+WSGIScriptAlias / <%= destination %>/biocloudcentral/wsgi.py
+
+DocumentRoot <%= destination %>/
+Alias /static/admin <%= destination %>/lib/python2.7/site-packages/django/contrib/admin/media/
+Alias /static/ <%= destination %>/static/
+
+<Directory <%= destination %>>
+    Order allow,deny
+    allow from all
+</Directory>
+
+<Directory <%= destination %>/lib/python2.7/site-packages/django/contrib/admin/media/>
+    Order allow,deny
+    allow from all
+</Directory>
+
+ErrorLog <%= log_dir %>/error.log
+LogLevel warn
+CustomLog <%= log_dir %>/access.log combined
